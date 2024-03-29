@@ -1,0 +1,49 @@
+// Problem Description: https://dmoj.ca/problem/ccc07s3
+
+import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int num = sc.nextInt();
+    int one = 0; int two = 0;
+    HashMap<Integer, Integer> record = new HashMap<>();
+    for(int a =0; a<num; a++){
+      one = sc.nextInt();
+      two = sc.nextInt();
+      record.put(one, two);
+    }
+    one = sc.nextInt();
+    two = sc.nextInt();
+    boolean friend = false;
+    boolean link = false;
+    int count = 0; int subcounter = -1;
+    boolean stopper = false;
+    
+    while(one != 0 && two != 0){
+      int group = one;
+      if(record.containsKey(group)){
+        friend = false;
+        link = false;
+        count = -1; subcounter = -1;
+        while(!link){
+          if(!record.containsKey(group)){break;}
+          else{
+            group = record.get(group);
+            if(!friend) count++;
+            if(group == two){friend = true;}
+            if(group == one){link = true; break;}
+          }
+        }
+        if(friend){
+          if(link){ 
+            System.out.println("Yes " + count);
+          }
+        }
+        else{if(!stopper){System.out.println("No");}}
+      }
+      else{System.out.println("No");}
+      one = sc.nextInt();
+      two = sc.nextInt();
+    }
+  }
+}
