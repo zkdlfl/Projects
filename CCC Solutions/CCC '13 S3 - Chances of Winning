@@ -1,0 +1,82 @@
+// Problem Description: https://dmoj.ca/problem/ccc13s3
+
+import java.util.*;
+public class Main {
+  static int num;
+  static int game;
+  static int [][] matches;
+  static int [] use;
+  //current array shows the scores and the rounds played
+  //focus is the layer for matches
+  public static int run(int [] current, int focus, int start){
+    int [] demo1 = new int[5];
+    int [] demo2 = new int[5];
+    int [] demo3 = new int[5];
+    if(start==7){ 
+      int big = 0; int value = 0; int same = 0;
+      for(int l = 1; l<5; l++){
+        if(current[l] == value){same = 1;}
+        if(current[l] > value){big = l; value = current[l]; same = 0;}
+      }
+
+      if(same == 1){return 0;}
+      if(big == num){return 1;}
+      return 0; 
+    }
+    
+    for(int e = 1; e<5; e++){ //make the duplicates
+      // System.out.print(current[e] + " ");
+      demo1[e] = current[e]; demo2[e] = current[e]; demo3[e] = current[e];
+    }
+    
+    int player1 = matches[focus][0]; int player2 = matches[focus][1];
+    int count = 0;
+    
+    demo1[player1] = demo1[player1]+3;
+    count += run(demo1, focus+1, start+1);
+    
+    demo2[player2] = demo2[player2]+3;
+    count += run(demo2, focus+1, start+1);
+
+    demo3[player1]=demo3[player1]+1; demo3[player2] = demo3[player2]+1;
+    count += run(demo3, focus+1, start+1);
+    
+    return count;
+  }
+  
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    num = sc.nextInt();  game = sc.nextInt();
+    int [][] score = new int[4][5]; // 0 is the points
+    for(int v =0 ; v<4; v++){
+      for(int k =0 ;k<5; k++){
+        if(k-1 == v){score[v][k] = 1;}
+        else{score[v][k] = 0;}
+      }
+    }
+
+    matches = new int[6-game][2];
+    use = new int[5];
+    for(int a=0 ; a<game; a++){
+      int one = sc.nextInt(); int two = sc.nextInt();
+      int score1 = sc.nextInt(); int score2 = sc.nextInt();
+      score[one-1][two] = 1; score[two-1][one] = 1;
+      if(score1>score2){use[one] = use[one]+3;}
+      if(score1<score2){use[two] = use[two]+3;}
+      if(score1==score2){use[two]++; use[one]++;}
+    }
+
+    int ahh = 0;
+    for(int b = 0; b<4; b++){
+      for(int c = 1; c<5; c++){
+        if(score[b][c] == 0){ 
+          matches[ahh][0] = b+1;
+          matches[ahh][1] = c;
+          score[b][c] = 1; score[c-1][b+1] = 1;
+          ahh++;
+        }
+      }
+    }
+    System.out.println(run(use, 0, game+1));
+  }
+}
