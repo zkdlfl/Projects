@@ -1,0 +1,46 @@
+// Problem Description https://dmoj.ca/problem/ccc24j5
+
+import java.util.*;
+public class Main {
+  static int r; static int c;
+  static char [][] field;
+  static int st; static int cs;
+  static int small, med, big;
+  public static void flood(int row, int col){
+    if(row < 0 || row >= r){return;}
+    if(col < 0 || col >= c){return;}
+
+    if(field[row][col] == '*'){return;}
+    if(field[row][col] == '.'){return;}
+
+    if(field[row][col]=='S'){small++;}
+    if(field[row][col]=='M'){med++;}
+    if(field[row][col]=='L'){big++;}
+    
+    field[row][col] = '.';
+    flood(row-1, col);
+    flood(row+1, col);
+    flood(row, col+1);
+    flood(row, col-1);
+    return ;
+  }
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    r = sc.nextInt();  c = sc.nextInt();
+    sc.nextLine();
+    field = new char[r][c];
+    for(int a = 0; a<r; a++){
+      String line = sc.nextLine();
+      for(int be=0; be<c; be++){
+        field[a][be] = line.charAt(be);
+      }
+    }
+    st = sc.nextInt(); cs = sc.nextInt();
+
+    small = 0; med=0; big = 0;
+    flood(st, cs);
+    med = med*5;
+    big = big*10;
+    System.out.println(small+med+big);
+  }
+}
