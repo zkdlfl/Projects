@@ -1,0 +1,105 @@
+// Problem Description: https://dmoj.ca/problem/ccc10j5
+
+import java.util.*;
+public class Main {
+  static class Pair{
+    int row, col;
+    public Pair(int row, int col){
+      this.row = row;
+      this.col = col;
+    }
+  }
+  // static int fr, fc;
+  static Queue<Pair> record;
+  static LinkedList<String> data;
+  static int[][] visit;
+  
+  public static void move(int w, int l){
+    int [][] array = new int[8][2];
+    for(int d =0 ; d<8; d++){
+      for(int o = 0; o<2; o++){array[d][o] = -1;}
+    }
+    int area = 0;
+
+    int first = w-2; int second = l+1;
+    array[area][0] = first; array[area][1] = second;
+    area += 1; 
+    
+    first = w-1; second = l+2;
+    array[area][0] = first; array[area][1] = second;
+    area += 1; 
+
+    first = w+1; second = l+2;
+    array[area][0] = first; array[area][1] = second;
+    area += 1; 
+    
+    first = w+2; second = l+1;
+    array[area][0] = first; array[area][1] = second;
+    area += 1; 
+    
+    first = w-2; second = l-1;
+    array[area][0] = first; array[area][1] = second;
+    area += 1; 
+    
+    first = w-1; second = l-2;
+    array[area][0] = first; array[area][1] = second;
+    area += 1; 
+    
+    first = w+1; second = l-2;
+    array[area][0] = first; array[area][1] = second;
+    area += 1; 
+    
+    first = w+2; second = l-1;
+    array[area][0] = first; array[area][1] = second;
+    area += 1; 
+
+    for(int a =0 ; a<8; a++){
+      if(array[a][0] >= 1 && array[a][0] <= 8){
+        if(array[a][1] >= 1 && array[a][1] <= 8){
+          String name = array[a][0] + "#" + array[a][1];
+          if(!data.contains(name)){
+            record.add(new Pair(array[a][0], array[a][1]));
+            data.add(name);
+            // visit[ array[a][0] ][ array[a][1] ] = 1;
+          }
+        }
+      }
+    }
+  }
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    record = new LinkedList<>();
+    data = new LinkedList<>();
+    visit = new int[9][9];
+    for(int a = 0; a<9; a++){
+      for(int b =0 ; b<9; b++){visit[a][b] = 0;}
+    }
+    int r = sc.nextInt();
+    int c = sc.nextInt();
+    
+    record.add(new Pair(r, c));
+    data.add(r + "#" + c);
+    // visit[r][c] = 1;
+    
+    int fr = sc.nextInt();
+    int fc = sc.nextInt();
+    
+    boolean yes = true;
+    int count = -1;
+    while(yes){
+      // System.out.println("START");
+      count += 1;
+      int times = record.size();
+      for(int x = 0; x<times; x++){
+        Pair give = record.poll();
+        // System.out.println(give.row + " " + give.col);
+        int one = give.row; int two = give.col;
+        if(one == fr && two == fc){yes = false; continue;}
+        if(visit[one][two] == 0){
+          visit[one][two] = 1; move(one, two);
+        }
+      }
+    }
+    System.out.println(count);
+  }
+}
