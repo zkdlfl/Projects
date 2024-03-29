@@ -1,0 +1,44 @@
+// Problem: https://dmoj.ca/problem/ccc09s2
+
+import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int row = sc.nextInt();
+    int col = sc.nextInt();
+    int [][] array = new int[row][col];
+    int [][] demo = new int[row][col];
+    for(int c = 0; c<row; c++){
+      for(int d =0 ; d<col; d++){array[c][d] = sc.nextInt();}
+    }
+    String end = "";
+    String ans = "";
+    int hold_a = 0; int hold = 0;
+    HashSet<String> keep = new HashSet<>();
+    for(int de =0; de<col; de++){ans = ans + demo[row-1][de] +"";}
+    keep.add(ans);
+    for(int a = row-1; a>=0; a--){ // 3 2 1 0
+      ans = "";
+      for(int b = a; b>0; b--){ // 3 2 1 0
+        for(int c =0; c<col; c++){
+          if(b == a){
+            hold_a = array[row-b-1][c]; // 4-3+1 = 2
+            hold = array[row-b][c]; // 4-3 = 1
+            if(hold_a == hold){demo[row-b][c] = 0;}
+            else{demo[row-b][c] = 1;} 
+          }
+          else{
+            hold_a = demo[row-b-1][c];
+            hold = array[row-b][c];
+            if(hold_a == hold){demo[row-b][c] = 0;}
+            else{demo[row-b][c] = 1;}
+          }
+        }
+      }
+      for(int de =0; de< col; de++){ans = ans + demo[row-1][de] +"";}
+      // System.out.println(a+ ": "+ ans);
+      if(!keep.contains(ans)){keep.add(ans);}
+    }
+    System.out.println(keep.size());
+  }
+}
